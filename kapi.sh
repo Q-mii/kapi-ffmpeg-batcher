@@ -1,5 +1,5 @@
 #!/bin/sh
-# original "kapi.bat" by em essex
+# original "kapi.bat" by em essex; shell base by hyenatown
 menu(){
     echo "          //__//"
     echo "   i'm   /   -   \______________ "
@@ -23,12 +23,14 @@ menu(){
     printf "\033[37;44m=== AUDIO TOOLS ===\033[0m\n"
     printf "\033[0;33;40m[5]\033[0m DUMP AUDIO AS *.WAV\n"
     printf "\033[0;33;40m[6]\033[0m REMOVE AUDIO\n"
+    printf "\033[0;33;40m[7,8,9]\033[0m MAKE *.FLACs, 320kbps *.MP3s, or ~128kbps *.OPUS\n"
     echo
     printf "\033[37;44m=== SPECIAL USE ===\033[0m\n"
-    printf "\033[0;33;40m[7]\033[0m AUDIO + IMAGE TO h264 MP4 (2fps, CPU encoding, cue-points > chapters)\n"
+    printf "\033[0;33;40m[0]\033[0m AUDIO + IMAGE TO h264 MP4 (2fps, CPU encoding, cue-points > chapters)\n"
     printf "    >> matches audio file with cover.* image\n"
     printf "    >> falls back on audio > image name match\n"
-    printf "\033[0;33;40m[8]\033[0m xdd\n"
+    printf "\033[0;33;40m[x]\033[0m xdd\n"
+    printf "\033[0;33;40m[t]\033[0m make thumbnails\n"
     echo
     read option
 }
@@ -58,15 +60,24 @@ while [ $option != '' ]
         # [6] REMOVE AUDIO
         6) clear; for i in *; do ffmpeg -i "$i" -c copy -an "${i%.*}_noSound.${i##*.}"; done; exit 0;;
        6f) clear; mkdir -p output; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -c copy -an "output/${i%.*}_noSound.${i##*.}"; done; exit 0;;
+        # [7] MAKE *.FLACs
+        7) clear; for i in *; do ffmpeg -i "$i" -c:a flac "${i%.*}.flac"; done; exit 0;;
+       7f) clear; mkdir -p "[FLAC]"; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -c:a flac "${i%.*}.flac"; done; exit 0;;
+        # [8] MAKE 320kbps *.MP3s
+        8) clear; for i in *; do ffmpeg -i "$i" -c:a libmp3lame 320k "${i%.*}.mp3"; done; exit 0;;
+       8f) clear; mkdir -p "[MP3]"; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -c:a libmp3lame 320k "${i%.*}.mp3"; done; exit 0;;
+        # [9] MAKE ~128kbps *.OPUS
+        9) clear; for i in *; do ffmpeg -i "$i" -c:a libopus -b:a 128k "%%~ni.opus"; done; exit 0;;
+       9f) clear; mkdir -p "[OPUS]"; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -c:a libopus -b:a 128k "%%~ni.opus"; done; exit 0;;
 
-        # [7] AUDIO + IMAGE TO h264 MP4 (2fps, CPU encoding, cue-points > chapters)
+        # [0] AUDIO + IMAGE TO h264 MP4 (2fps, CPU encoding, cue-points > chapters)
         # >> matches audio file with cover.* image\n"
         # >> falls back on audio > image name match\n"
-        7) clear;
+        0) clear;
             if [ ! -f cover.* ]; then
               for i in *; do
                 for a in *.{jpeg,jpg,png,gif,bmp,tiff}; do
-                  if [ ]; then #FIXME: parameter missing
+                  if [IF NOT EXIST "cover.*"]; then
                     ffmpeg -loop 1 -framerate 2 -i $a - $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${i%.*}.mp4"
                     else
                       for i in *; do
@@ -79,12 +90,12 @@ while [ $option != '' ]
               done
             fi; exit 0;;
 
-       7f) clear;
+       0f) clear;
             if [ ! -f cover.* ]; then
                 mkdir output
                 for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do
                   for a in *.{jpeg,jpg,png,gif,bmp,tiff}; do
-                    if [ ]; then #FIXME: parameter missing
+                    if [IF NOT EXIST "cover.*"]; then
                       ffmpeg -loop 1 -framerate 2 -i $a - $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "output/${i%.*}.mp4"
                       else
                         for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do
@@ -96,11 +107,29 @@ while [ $option != '' ]
                   done
                 done
             fi; exit 0;;
-        # [8] xdd
-        8) clear; for i in *; do ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale='min(320,iw)':min'(240,ih)',unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled"; done; exit 0;;
-       8f) clear; mkdir -p output; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale='min(320,iw)':min'(240,ih)',unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled"; done; exit 0;;
-        x) exit;;
-       \n) exit;;
+        # [x] xdd
+        x) clear; for i in *; do ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale='min(320,iw)':min'(240,ih)',unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled"; done; exit 0;;
+       xf) clear; mkdir -p output; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale='min(320,iw)':min'(240,ih)',unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled"; done; exit 0;;
+        # [t] make thumbnails
+        t) clear; 
+            mkdir "thumb"; 
+            for %%i in (%*) do 
+              (ffmpeg -ss 00:00:05.01 -i "%%~i" -vf "crop=w='min(iw\,ih)':h='min(iw\,ih)',scale=160:160,setsar=1" -frames:v 1 "thumb\%%~ni.png"
+              pngquant -f --ext .png 16 "thumb\%%~ni.png"
+              pngout "thumb\%%~ni.png")
+            done
+            fi; exit 0;;
+        tf) clear; 
+            if [ ! -f cover.* ]; then
+              mkdir -p "thumb"; 
+              for %%i in (*) do 
+                (ffmpeg -ss 00:00:05.01 -i "%%~i" -vf "crop=w='min(iw\,ih)':h='min(iw\,ih)',scale=160:160,setsar=1" -frames:v 1 "thumb\%%~ni.png"
+                  pngquant -f --ext .png 16 "thumb/%%~ni.png"
+                  pngout "thumb\%%~ni.png")
+              done
+            done
+            fi; exit 0;;
+        n) exit;;
         *) echo "NOT VALID"; exit 1;;
       esac
     fi
