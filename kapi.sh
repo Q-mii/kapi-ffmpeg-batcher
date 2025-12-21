@@ -187,16 +187,14 @@ while [ $option != '' ]
             (ffmpeg -ss 00:00:05.01 -i "$i" -vf "crop=w='min(iw\,ih)':h='min(iw\,ih)',scale=160:160,setsar=1" -frames:v 1 "thumb\{i%.*}.png"
             pngquant -f --ext .png 16 "thumb\{i%.*}.png"
             pngout "thumb\{i%.*}.png")
-            done
-          fi; exit 0;;
+          done; exit 0;;
         tf) clear; 
           mkdir -p "thumb"; 
             for i in *; do 
               (ffmpeg -ss 00:00:05.01 -i "%%~i" -vf "crop=w='min(iw\,ih)':h='min(iw\,ih)',scale=160:160,setsar=1" -frames:v 1 "thumb\{i%.*}.png"
               pngquant -f --ext .png 16 "thumb/{i%.*}.png"
               pngout "thumb\{i%.*}.png")
-            done
-          fi; exit 0;;
+          done; exit 0;;
         n) exit;;
         *) echo "NOT VALID"; exit 1;;
       esac
