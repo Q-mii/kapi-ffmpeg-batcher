@@ -107,7 +107,6 @@ while [ $option != '' ]
         for i in *; do ffmpeg -i "$i" -c:a flac "${i%.*}.flac";
         done; exit 0;;
        7f) clear;
-          cd "$1";
           mkdir -p "$1 [FLAC]"; 
             for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do ffmpeg -i "$i" -c:a flac "$1 [FLAC]/${i%.*}.flac"; 
           done; exit 0;;
@@ -173,29 +172,31 @@ while [ $option != '' ]
           fi; exit 0;;
         # [x] xdd
         x) clear; 
-            for i in *; do 
-              ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale='min(320,iw)':min'(240,ih)',unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled"; 
-            done; exit 0;;
-       xf) clear; mkdir -p output; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale='min(320,iw)':min'(240,ih)',unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled"; done; exit 0;;
+          for i in *; do 
+            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale='min(320,iw)':min'(240,ih)',unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled"; 
+          done; exit 0;;
+       xf) clear;
+          mkdir -p output;
+          for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do
+            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale='min(320,iw)':min'(240,ih)',unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled";
+          done; exit 0;;
         # [t] make thumbnails
         t) clear; 
-            mkdir "thumb"; 
+          mkdir "thumb"; 
+          for i in *; do 
+            (ffmpeg -ss 00:00:05.01 -i "$i" -vf "crop=w='min(iw\,ih)':h='min(iw\,ih)',scale=160:160,setsar=1" -frames:v 1 "thumb\{i%.*}.png"
+            pngquant -f --ext .png 16 "thumb\{i%.*}.png"
+            pngout "thumb\{i%.*}.png")
+            done
+          fi; exit 0;;
+        tf) clear; 
+          mkdir -p "thumb"; 
             for i in *; do 
-              (ffmpeg -ss 00:00:05.01 -i "$i" -vf "crop=w='min(iw\,ih)':h='min(iw\,ih)',scale=160:160,setsar=1" -frames:v 1 "thumb\{i%.*}.png"
-              pngquant -f --ext .png 16 "thumb\{i%.*}.png"
+              (ffmpeg -ss 00:00:05.01 -i "%%~i" -vf "crop=w='min(iw\,ih)':h='min(iw\,ih)',scale=160:160,setsar=1" -frames:v 1 "thumb\{i%.*}.png"
+              pngquant -f --ext .png 16 "thumb/{i%.*}.png"
               pngout "thumb\{i%.*}.png")
             done
-            fi; exit 0;;
-        tf) clear; 
-            if [ ! -f cover.* ]; then
-              mkdir -p "thumb"; 
-              for i in *; do 
-                (ffmpeg -ss 00:00:05.01 -i "%%~i" -vf "crop=w='min(iw\,ih)':h='min(iw\,ih)',scale=160:160,setsar=1" -frames:v 1 "thumb\{i%.*}.png"
-                pngquant -f --ext .png 16 "thumb/{i%.*}.png"
-                pngout "thumb\{i%.*}.png")
-              done
-            done
-            fi; exit 0;;
+          fi; exit 0;;
         n) exit;;
         *) echo "NOT VALID"; exit 1;;
       esac

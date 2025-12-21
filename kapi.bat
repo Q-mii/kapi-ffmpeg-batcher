@@ -3,14 +3,14 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
   set "DEL=%%a"
 )
 cls
-echo           ^/^/__^/^/ 
-echo    i'm   ^/   -   ^\______________ 
-echo   here  ^/                        ^\ 
-echo    to  ^| Y                        ^\ 
-echo   help ^ \____^/ ^|                  ^| 
-echo    ...     __^/  ^\   ^/___    _     ^\ 
-echo           ^/^/___^/ ^| ^|    ^\   ^| ^\   ^/  
-echo                 ^/^/^/     ^/^/ ^/  ^/^/ ^/ 
+echo "          //__//"
+echo "   i'm   /   -   \______________ "
+echo "  here  /                        \ "
+echo "   to  | Y                        \ "
+echo "  help  \____/ |                  | "
+echo "   ...     __/  \   /___    _     \ "
+echo "          //___/ | |    \   | \   / "
+echo "                ///     // /  // / "
 
 call :shiny F0 "LET'S ENCODE VARIOUS FILES FOR WEB SHARING"
 echo.
