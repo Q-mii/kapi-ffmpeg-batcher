@@ -1,16 +1,16 @@
 ECHO OFF
 for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (
-set "DEL=%%a"
+  set "DEL=%%a"
 )
 cls
-echo ^/^/__^/^/
-echo i'm ^/ - ^\______________
-echo here ^/ ^\
-echo to ^| Y ^\
-echo help ^ \____^/ ^| ^|
-echo ... __^/ ^\ ^/___ _ ^\
-echo ^/^/___^/ ^| ^| ^\ ^| ^\ ^/
-echo ^/^/^/ ^/^/ ^/ ^/^/ ^/
+echo           ^/^/__^/^/ 
+echo    i'm   ^/   -   ^\______________ 
+echo   here  ^/                        ^\ 
+echo    to  ^| Y                        ^\ 
+echo   help ^ \____^/ ^|                  ^| 
+echo    ...     __^/  ^\   ^/___    _     ^\ 
+echo           ^/^/___^/ ^| ^|    ^\   ^| ^\   ^/  
+echo                 ^/^/^/     ^/^/ ^/  ^/^/ ^/ 
 
 call :shiny F0 "LET'S ENCODE VARIOUS FILES FOR WEB SHARING"
 echo.
@@ -20,32 +20,32 @@ echo.
 call :shiny 1F "=== WITH AUDIO ==="
 echo.
 call :shiny 06 "[1 or 2]"
-echo h264 NVENC MP4 (max 1280x720px, ~2mbps or ~5mbps)
+echo  h264 NVENC MP4 (max 1280x720px, ~2mbps or ~5mbps)
 echo.
 call :shiny 1F "=== WITHOUT AUDIO ==="
 echo.
 call :shiny 06 "[3 or 4]"
-echo h264 NVENC MP4 (max 1280x720px, ~2mbps or ~5mbps)
+echo  h264 NVENC MP4 (max 1280x720px, ~2mbps or ~5mbps)
 echo.
 call :shiny 1F "=== AUDIO TOOLS ==="
 echo.
 call :shiny 06 "[5]"
-echo DUMP AUDIO AS *.WAV
+echo  DUMP AUDIO AS *.WAV
 call :shiny 06 "[6]"
-echo REMOVE AUDIO
+echo  REMOVE AUDIO
 call :shiny 06 "[7,8,9]"
-echo MAKE *.FLACs, 320kbps *.MP3s, or ~128kbps *.OPUS
+echo  MAKE *.FLACs, 320kbps *.MP3s, or ~128kbps *.OPUS
 echo.
 call :shiny 1F "=== SPECIAL USE ==="
 echo.
 call :shiny 06 "[0]"
-echo AUDIO + IMAGE TO h264 MP4 (2fps, CPU encoding, cue-points ^> chapters)
-echo ^>^> matches audio file with cover.^* image
-echo ^>^> falls back on audio ^> image name match
+echo  AUDIO + IMAGE TO h264 MP4 (2fps, CPU encoding, cue-points ^> chapters)
+echo     ^>^> matches audio file with cover.^* image
+echo     ^>^> falls back on audio ^> image name match
 call :shiny 06 "[x]"
-echo xdd
+echo  xdd
 call :shiny 06 "[t]"
-echo make thumbnails
+echo  make thumbnails
 
 SET /p op=
 IF /i "%op%" == "1" GOTO h264-2
@@ -102,7 +102,7 @@ goto end
 
 :h264-2-na
 for %%i in (%*) do (
-ffmpeg -i "%%~i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -an -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "%%~ni_encode.mp4")
+ffmpeg -i "%%~i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -an  -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "%%~ni_encode.mp4")
 goto end
 
 :h264-5-na
@@ -114,7 +114,7 @@ goto end
 cd "%~1"
 mkdir output
 for %%i in (*.mkv, *.mp4, *.mov, *.avi, *.mxf, *.asf, *.ts, *.vob, *.3gp, *.3g2, *.f4v, *.flv, *.ogv, *.ogx, *.wbm, *.divx) do (
-ffmpeg -i "%%~i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -an -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "output/%%~ni_encode.mp4")
+ffmpeg -i "%%~i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -an  -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "output/%%~ni_encode.mp4")
 goto end
 
 :h264-5-naf
