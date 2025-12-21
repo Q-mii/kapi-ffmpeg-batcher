@@ -139,38 +139,38 @@ while [ $option != '' ]
         # >> matches audio file with cover.* image\n"
         # >> falls back on audio > image name match\n"
         0) clear;
-            if [ ! -f cover.* ]; then
-              for i in *; do
-                for a in *.{jpeg,jpg,png,gif,bmp,tiff}; do
-                  if [! -e "cover.*"]; then
-                    ffmpeg -loop 1 -framerate 2 -i $a - $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${i%.*}.mp4"
-                    else
-                      for i in *; do
-                        for a in cover.*; do
-                          ffmpeg -loop 1 -framerate 2 -i $a -i $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${i%.*}.mp4"
+          if [ ! -f cover.* ]; then
+            for i in *; do
+              for a in *.{jpeg,jpg,png,gif,bmp,tiff}; do
+                if [! -e "cover.*"]; then
+                  ffmpeg -loop 1 -framerate 2 -i $a - $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${i%.*}.mp4"
+                  else
+                    for i in *; do
+                      for a in cover.*; do
+                        ffmpeg -loop 1 -framerate 2 -i $a -i $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${i%.*}.mp4"
                       done
-                    done
-                  fi
-                done
-              done
-            fi; exit 0;;
-       0f) clear;
-            if [ ! -f cover.* ]; then
-                mkdir output
-                for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do
-                  for a in *.{jpeg,jpg,png,gif,bmp,tiff}; do
-                    if [! -e "cover.*"]; then
-                      ffmpeg -loop 1 -framerate 2 -i $a - $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "output/${i%.*}.mp4"
-                      else
-                        for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do
-                          for a in cover.*; do
-                            ffmpeg -loop 1 -framerate 2 -i $a -i $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "output/${i%.*}.mp4"
-                        done
-                      done
-                    fi
                   done
-                done
-            fi; exit 0;;
+                fi
+              done
+            done
+          fi; exit 0;;
+       0f) clear;
+          if [ ! -f cover.* ]; then
+            mkdir output
+            for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do
+              for a in *.{jpeg,jpg,png,gif,bmp,tiff}; do
+                if [! -e "cover.*"]; then
+                  ffmpeg -loop 1 -framerate 2 -i $a - $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "output/${i%.*}.mp4"
+                  else
+                    for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do
+                      for a in cover.*; do
+                        ffmpeg -loop 1 -framerate 2 -i $a -i $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "output/${i%.*}.mp4"
+                      done
+                  done
+                fi
+              done
+            done
+          fi; exit 0;;
         # [x] xdd
         x) clear; 
             for i in *; do 
