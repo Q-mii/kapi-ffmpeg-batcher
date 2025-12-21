@@ -62,13 +62,13 @@ while [ $option != '' ]
        6f) clear; mkdir -p output; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -c copy -an "output/${i%.*}_noSound.${i##*.}"; done; exit 0;;
         # [7] MAKE *.FLACs
         7) clear; for i in *; do ffmpeg -i "$i" -c:a flac "${i%.*}.flac"; done; exit 0;;
-       7f) clear; mkdir -p "$PWD [FLAC]"; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -c:a flac "[FLAC]/${i%.*}.flac"; done; exit 0;;
+       7f) clear; mkdir -p "$PWD [FLAC]"; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -c:a flac "$PWD [FLAC]/${i%.*}.flac"; done; exit 0;;
         # [8] MAKE 320kbps *.MP3s
         8) clear; for i in *; do ffmpeg -i "$i" -c:a libmp3lame 320k "${i%.*}.mp3"; done; exit 0;;
-       8f) clear; mkdir -p "$PWD [MP3]"; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -c:a libmp3lame 320k "[MP3]/${i%.*}.mp3"; done; exit 0;;
+       8f) clear; mkdir -p "$PWD [MP3]"; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -c:a libmp3lame 320k "$PWD [MP3]/${i%.*}.mp3"; done; exit 0;;
         # [9] MAKE ~128kbps *.OPUS
         9) clear; for i in *; do ffmpeg -i "$i" -c:a libopus -b:a 128k "%%~ni.opus"; done; exit 0;;
-       9f) clear; mkdir -p "$PWD [OPUS]"; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -c:a libopus -b:a 128k "[OPUS]/%%~ni.opus"; done; exit 0;;
+       9f) clear; mkdir -p "$PWD [OPUS]"; for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do ffmpeg -i "$i" -c:a libopus -b:a 128k "$PWD [OPUS]/%%~ni.opus"; done; exit 0;;
 
         # [0] AUDIO + IMAGE TO h264 MP4 (2fps, CPU encoding, cue-points > chapters)
         # >> matches audio file with cover.* image\n"
