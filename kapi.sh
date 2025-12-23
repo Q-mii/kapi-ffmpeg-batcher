@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/bin/env bash
 # original "kapi.bat" by em essex; shell base by hyenatown
+job="${1:-$(basename "$PWD")}"
 menu(){
     echo "          //__//"
     echo "   i'm   /   -   \______________ "
@@ -36,51 +37,51 @@ menu(){
 }
 clear
 menu
-while [ $option != '' ]
+while [ "$option" != "" ]
     do
-    if [ $option = '' ]; then
+    if [ "$option" = "" ]; then
       exit;
     else
       case $option in
         # [1] h264 NVENC MP4 (max 1280x720px, ~2mbps)
         1) clear;
           for i in *; do
-            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -acodec aac -b:a 192k -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "${i%.*}_encode.mp4";
+            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -acodec aac -b:a 192k -vf "scale=min(1280\,iw):min(720\,ih):force_original_aspect_ratio=decrease" "${i%.*}_encode.mp4";
           done; exit 0;;
        1f) clear;
           mkdir -p output;
           for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do
-           ffmpeg -i "$i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -acodec aac -b:a 192k -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "output/${i%.*}_encode.mp4";
+           ffmpeg -i "$i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -acodec aac -b:a 192k -vf "scale=min(1280\,iw):min(720\,ih):force_original_aspect_ratio=decrease" "output/${i%.*}_encode.mp4";
           done; exit 0;;
         # [2] h264 NVENC MP4 (max 1280x720px, ~5mbps)
         2) clear;
           for i in *; do
-            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 5M -maxrate 5M -bufsize 512K -acodec aac -b:a 192k -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "${i%.*}_encode.mp4";
+            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 5M -maxrate 5M -bufsize 512K -acodec aac -b:a 192k -vf "scale=min(1280\,iw):min(720\,ih):force_original_aspect_ratio=decrease" "${i%.*}_encode.mp4";
           done; exit 0;;
        2f) clear;
           mkdir -p output;
           for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do
-            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 5M -maxrate 5M -bufsize 512K -acodec aac -b:a 192k -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "output/${i%.*}_encode.mp4";
+            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 5M -maxrate 5M -bufsize 512K -acodec aac -b:a 192k -vf "scale=min(1280\,iw):min(720\,ih):force_original_aspect_ratio=decrease" "output/${i%.*}_encode.mp4";
           done; exit 0;;
         # [3] h264 NVENC MP4 (max 1280x720px, ~2mbps)
         3) clear;
           for i in *; do
-            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -an  -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "${i%.*}_encode.mp4";
+            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -an  -vf "scale=min(1280\,iw):min(720\,ih):force_original_aspect_ratio=decrease" "${i%.*}_encode.mp4";
           done; exit 0;;
        3f) clear;
           mkdir -p output;
           for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do
-            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -an  -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "output/${i%.*}_encode.mp4";
+            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 2M -maxrate 2M -bufsize 512K -an  -vf "scale=min(1280\,iw):min(720\,ih):force_original_aspect_ratio=decrease" "output/${i%.*}_encode.mp4";
           done; exit 0;;
         # [4] h264 NVENC MP4 (max 1280x720px, ~5mbps)
         4) clear;
           for i in *; do
-            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 5M -maxrate 5M -bufsize 512K -an -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "${i%.*}_encode.mp4";
+            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 5M -maxrate 5M -bufsize 512K -an -vf "scale=min(1280\,iw):min(720\,ih):force_original_aspect_ratio=decrease" "${i%.*}_encode.mp4";
           done; exit 0;;
        4f) clear;
           mkdir -p output;
           for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do
-            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 5M -maxrate 5M -bufsize 512K -an -vf "scale='min(1280,iw)':min'(720,ih)':force_original_aspect_ratio=decrease" "output/${i%.*}_encode.mp4";
+            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 5M -maxrate 5M -bufsize 512K -an -vf "scale=min(1280\,iw):min(720\,ih):force_original_aspect_ratio=decrease" "output/${i%.*}_encode.mp4";
           done; exit 0;;
         # [5] DUMP AUDIO AS *.WAV
         5) clear;
@@ -107,8 +108,8 @@ while [ $option != '' ]
         for i in *; do ffmpeg -i "$i" -c:a flac "${i%.*}.flac";
         done; exit 0;;
        7f) clear;
-          mkdir -p "$1 [FLAC]"; 
-            for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do ffmpeg -i "$i" -c:a flac "$1 [FLAC]/${i%.*}.flac"; 
+          mkdir -p "$job [FLAC]"; 
+            for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do ffmpeg -i "$i" -c:a flac "$job [FLAC]/${i%.*}.flac"; 
           done; exit 0;;
         # [8] MAKE 320kbps *.MP3s
         8) clear;
@@ -116,9 +117,9 @@ while [ $option != '' ]
             ffmpeg -i "$i" -c:a libmp3lame 320k "${i%.*}.mp3";
           done; exit 0;;
        8f) clear;
-          mkdir -p "$1 [MP3]";
+          mkdir -p "$job [MP3]";
           for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do
-            ffmpeg -i "$i" -c:a libmp3lame 320k "$1 [MP3]/${i%.*}.mp3";
+            ffmpeg -i "$i" -c:a libmp3lame 320k "$job [MP3]/${i%.*}.mp3";
           done; exit 0;;
         # [9] MAKE ~128kbps *.OPUS
         9) clear;
@@ -126,27 +127,27 @@ while [ $option != '' ]
             ffmpeg -i "$i" -c:a libopus -b:a 128k "${i%.*}.opus";
           done; exit 0;;
        9f) clear;
-          mkdir -p "$1 [OPUS]";
+          mkdir -p "$job [OPUS]";
           for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do
-            ffmpeg -i "$i" -c:a libopus -b:a 128k "$1 [OPUS]/${i%.*}.opus"; 
+            ffmpeg -i "$i" -c:a libopus -b:a 128k "$job [OPUS]/${i%.*}.opus"; 
           done; exit 0;;
        9d) clear;
           for i in *; do
-            ffmpeg -i "$i" -c:a libopus -b:a 128k "${i%.*}.opus"; rem "$i";
+            ffmpeg -i "$i" -c:a libopus -b:a 128k "${i%.*}.opus"; rm "$i"
           done; exit 0;;
         # [0] AUDIO + IMAGE TO h264 MP4 (2fps, CPU encoding, cue-points > chapters)
         # >> matches audio file with cover.* image\n"
         # >> falls back on audio > image name match\n"
         0) clear;
-          if [ ! -f cover.* ]; then
+          if ! ls cover.* >/dev/null 2>&1; then
             for i in *; do
               for a in *.{jpeg,jpg,png,gif,bmp,tiff}; do
-                if [! -e "cover.*"]; then
-                  ffmpeg -loop 1 -framerate 2 -i $a - $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${i%.*}.mp4"
+                if [ ! -e "cover.*" ]; then
+                  ffmpeg -loop 1 -framerate 2 -i "$a" -i "$i" -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${i%.*}.mp4"
                   else
                     for i in *; do
                       for a in cover.*; do
-                        ffmpeg -loop 1 -framerate 2 -i $a -i $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${i%.*}.mp4"
+                        ffmpeg -loop 1 -framerate 2 -i "$a" -i "$i" -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${i%.*}.mp4"
                       done
                   done
                 fi
@@ -154,16 +155,16 @@ while [ $option != '' ]
             done
           fi; exit 0;;
        0f) clear;
-          if [ ! -f cover.* ]; then
+          if ! ls cover.* >/dev/null 2>&1; then
             mkdir output
             for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do
               for a in *.{jpeg,jpg,png,gif,bmp,tiff}; do
-                if [! -e "cover.*"]; then
-                  ffmpeg -loop 1 -framerate 2 -i $a - $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "output/${i%.*}.mp4"
+                if [ ! -e "cover.*" ]; then
+                  ffmpeg -loop 1 -framerate 2 -i "$a" -i "$i" -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "output/${i%.*}.mp4"
                   else
                     for i in *.{wav,mp3,flac,ogg,opus,wma,aiff,aif,m4a,aac}; do
                       for a in cover.*; do
-                        ffmpeg -loop 1 -framerate 2 -i $a -i $i -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "output/${i%.*}.mp4"
+                        ffmpeg -loop 1 -framerate 2 -i "$a" -i "$i" -c:v libx264 -preset medium -tune stillimage -crf 18 -c:a aac -b:a 256k -shortest -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "output/${i%.*}.mp4"
                       done
                   done
                 fi
@@ -173,27 +174,35 @@ while [ $option != '' ]
         # [x] xdd
         x) clear; 
           for i in *; do 
-            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale='min(320,iw)':min'(240,ih)',unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled"; 
+            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale=min(320\,iw):min(240\,ih),unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled"; 
           done; exit 0;;
        xf) clear;
           mkdir -p output;
           for i in *.{m4v,mkv,mp4,mov,avi,mxf,asf,ts,vob,3gp,3g2,f4v,flv,ogv,ogx,wbm,divx}; do
-            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale='min(320,iw)':min'(240,ih)',unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled";
+            ffmpeg -i "$i" -vcodec h264_nvenc -b:v 48K -maxrate 96K -bufsize 64K -acodec aac -b:a 16k -vf "framerate=fps=8,scale=min(320\,iw):min(240\,ih),unsharp=5:5:2" "${i%.*}_xdd.mp4" -filter_complex "acrusher=level_in=8:level_out=16:bits=8:mode=log:aa=1,alimiter=level_in=1:level_out=0.7:limit=0.3:attack=1:release=1:level=disabled";
           done; exit 0;;
         # [t] make thumbnails
         t) clear; 
-          mkdir "thumb"; 
-          for i in *; do 
-            (ffmpeg -ss 00:00:05.01 -i "$i" -vf "crop=w='min(iw\,ih)':h='min(iw\,ih)',scale=160:160,setsar=1" -frames:v 1 "thumb\{i%.*}.png"
-            pngquant -f --ext .png 16 "thumb\{i%.*}.png"
-            pngout "thumb\{i%.*}.png")
+          mkdir -p thumb
+          for i in *; do
+              [ -f "$i" ] || continue
+              thumb="thumb/${i%.*}.png"
+              ffmpeg -ss 00:00:05.01 -i "$i" \
+              -vf "crop=min(iw\,ih):min(iw\,ih),scale=160:160,setsar=1" \
+              -frames:v 1 "$thumb"
+              pngquant -f --ext .png 16 "$thumb"
+              pngout "$thumb"
           done; exit 0;;
         tf) clear; 
           mkdir -p "thumb"; 
-            for i in *; do 
-              (ffmpeg -ss 00:00:05.01 -i "%%~i" -vf "crop=w='min(iw\,ih)':h='min(iw\,ih)',scale=160:160,setsar=1" -frames:v 1 "thumb\{i%.*}.png"
-              pngquant -f --ext .png 16 "thumb/{i%.*}.png"
-              pngout "thumb\{i%.*}.png")
+          for i in *; do
+              [ -f "$i" ] || continue
+              thumb="thumb/${i%.*}.png"
+              ffmpeg -ss 00:00:05.01 -i "$i" \
+              -vf "crop=min(iw\,ih):min(iw\,ih),scale=160:160,setsar=1" \
+              -frames:v 1 "$thumb"
+              pngquant -f --ext .png 16 "$thumb"
+              pngout "$thumb"
           done; exit 0;;
         n) exit;;
         *) echo "NOT VALID"; exit 1;;
